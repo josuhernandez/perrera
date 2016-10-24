@@ -70,7 +70,7 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response getById(@PathParam("id") int idPerro) {
+	public Response getById(@PathParam("id") long idPerro) {
 
 		try {
 

@@ -1,7 +1,9 @@
 package com.ipartek.formacion.perrera.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -15,7 +17,8 @@ public class PerroDAOImplTest {
 	@Test
 	public void test() {
 
-		PerroDAOImpl dao = new PerroDAOImpl();
+		// PerroDAOImpl dao = new PerroDAOImpl(); //sin patron singleton
+		PerroDAOImpl dao = PerroDAOImpl.getInstance(); // con patron singleton'
 		int numPerrosIniciales;
 		int numPerrosTrasInsertarUnoNuevo;
 		int numPerrosTrasBorrar;
@@ -39,6 +42,10 @@ public class PerroDAOImplTest {
 
 		// comprobamos que inserta OK
 		assertTrue("Fallo al insertar", dao.insert(perro));
+
+		// comprobar que contiene id generado
+		assertTrue("Se te olvido settear id en perro", perro.getId() > 0);
+
 		// obtenemos la lista despues de haber insertado un nuevo perro
 		ArrayList<Perro> listaDespuesInsertar = (ArrayList<Perro>) dao.getAll("asc", "id");
 		numPerrosTrasInsertarUnoNuevo = listaDespuesInsertar.size();
@@ -57,7 +64,7 @@ public class PerroDAOImplTest {
 		// *****************************************************
 		// ******* COMPROBAR EL METODO getById(id) ****************
 		// *****************************************************
-		int idPerro = perro.getId();
+		long idPerro = perro.getId();
 		Perro perroObtenido = dao.getById(idPerro);
 		assertNotNull("Fallo al obtener el perro con id=" + idPerro, dao.getById(idPerro));
 		assertEquals("Lur", perroObtenido.getNombre());
@@ -74,6 +81,9 @@ public class PerroDAOImplTest {
 		numPerrosTrasBorrar = listaDespuesBorrar.size();
 		assertNotNull("No puede ser Null", numPerrosTrasBorrar);
 		assertEquals(numPerrosTrasInsertarUnoNuevo - 1, numPerrosTrasBorrar);
+
+		assertFalse("No se puede eliminar algo que no existe", dao.delete(0));
+		assertNull("No se puede recuperar algo que no existe", dao.getById(0));
 
 	}
 
