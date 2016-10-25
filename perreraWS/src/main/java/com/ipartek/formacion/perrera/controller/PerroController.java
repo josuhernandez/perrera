@@ -27,17 +27,11 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-/**
- * El poryecto hace refencia al proyecto skalada
- *
- * @author Curso
- *
- */
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
 	private Session s;
-	PerroDAOImpl dao = new PerroDAOImpl();
+
 	ArrayList<Perro> perros;
 
 	@GET
@@ -51,16 +45,20 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 
-			// controlamos parametros entrada
-			if ((orderBy == "asc" || orderBy == "desc") && (campo == "id" || campo == "nombre" || campo == "raza")) {
-				// llamamos al metodo 'getAll' del DAO
-				ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
-			}
+			/**
+			 * controlamos parametros entrada if ((orderBy == "asc" || orderBy
+			 * == "desc") && (campo == "id" || campo == "nombre" || campo ==
+			 * "raza")) { // llamamos al metodo 'getAll' del DAO a través del
+			 * patrón // Singleton
+			 **/
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
-
+			// }
 		} catch (Exception e) {
 			return Response.serverError().build();
 		}
+		// return Response.serverError().build();
 	}
 
 	@GET
@@ -74,6 +72,7 @@ public class PerroController {
 
 		try {
 
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perro = (Perro) dao.getById(idPerro);
 
 			if (perro == null) {

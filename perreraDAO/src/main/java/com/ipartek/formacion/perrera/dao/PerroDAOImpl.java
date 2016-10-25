@@ -48,7 +48,6 @@ public class PerroDAOImpl implements PerroDAO {
 		// s.beginTransaction();
 
 		try {
-
 			lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 			// finalizamos la transaccion. Como no estamos mofificando la BBDD
 			// no haria falta (lo comentamos)
@@ -123,11 +122,10 @@ public class PerroDAOImpl implements PerroDAO {
 	public boolean insert(Perro perro) {
 		boolean resul = false;
 		Session s = HibernateUtil.getSession();
-
 		try {
 			s.beginTransaction();
-			long idpCreado = (Long) s.save(perro);
-			if (idpCreado > 0) {
+			long idCreado = (Long) s.save(perro);
+			if (idCreado > 0) {
 				resul = true;
 				s.beginTransaction().commit();
 			} else {
@@ -138,7 +136,6 @@ public class PerroDAOImpl implements PerroDAO {
 			e.printStackTrace();
 		} finally {
 			s.close();
-
 		}
 		return resul;
 	}

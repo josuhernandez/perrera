@@ -21,7 +21,8 @@
 		<property name="show_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
 		<property name="hbm2ddl.auto">update</property><!-- Cuidado con esta linea cada vez crea, por que estamos en local -->
-		<mapping class="com.ipartek.formacion.ejemplos.pojo.Perro" />
 		<!-- poner las clases que queramos -->
+		<mapping class="com.ipartek.formacion.pojo.Perro" />
+		
 	</session-factory>
 </hibernate-configuration>
